@@ -1,5 +1,7 @@
 package com.example.recycleview;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +17,13 @@ import java.util.List;
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private List<Dog> dogList;
 
-    public MyAdapter(List<Dog> dogList) {
+    private Context context;
+    private OnListenerClickItem onListenerClickItem;
+
+    public MyAdapter(List<Dog> dogList, Context context, OnListenerClickItem onListenerClickItem) {
         this.dogList = dogList;
+        this.context = context;
+        this.onListenerClickItem = onListenerClickItem;
     }
 
     @NonNull
@@ -27,11 +34,18 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, @SuppressLint("RecyclerView") int position) {
         Dog dog= dogList.get(position);
         holder.imageView.setImageResource(dog.getImageId());
         holder.item_text.setText(dog.getName());
         holder.item_price.setText(dog.getPrice());
+
+        holder.imgDel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onListenerClickItem.onDelete(position,dog);
+            }
+        });
 
     }
 
@@ -40,8 +54,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         return dogList.size();
     }
 
-    class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView;
+   public static class MyViewHolder extends RecyclerView.ViewHolder {
+        private ImageView imageView, imgDel;
         private TextView item_text,item_price;
         private CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
@@ -50,6 +64,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             item_text= itemView.findViewById(R.id.item_text);
              cardView=itemView.findViewById(R.id.cardView);
             item_price=itemView.findViewById(R.id.item_price);
+            imgDel= itemView.findViewById(R.id.imgDel);
         }
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void setListData(List<Dog> listNew){
+        dogList.clear();
+        dogList.addAll(listNew);
+        notifyDataSetChanged();
     }
 }

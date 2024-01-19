@@ -30,4 +30,11 @@
             android:layout_height="wrap_content"
             android:text="3200" />
     </LinearLayout>
+    <ImageView
+
+        android:id="@+id/imgDel"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/baseline_delete_24"/>
 </androidx.cardview.widget.CardView>
