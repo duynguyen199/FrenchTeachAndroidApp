@@ -12,15 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    private List<Dog> dogList;
+    private ArrayList<Dog> dogList;
 
     private Context context;
     private OnListenerClickItem onListenerClickItem;
 
-    public MyAdapter(List<Dog> dogList, Context context, OnListenerClickItem onListenerClickItem) {
+    public MyAdapter(Context context,ArrayList<Dog> dogList, OnListenerClickItem onListenerClickItem) {
         this.dogList = dogList;
         this.context = context;
         this.onListenerClickItem = onListenerClickItem;
@@ -29,6 +30,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LayoutInflater inflater = LayoutInflater.from(context);
+
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.my_item,parent,false);
         return new MyViewHolder(view);
     }
@@ -43,6 +46,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         holder.imgDel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 onListenerClickItem.onDelete(position,dog);
             }
         });
@@ -55,9 +60,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
    public static class MyViewHolder extends RecyclerView.ViewHolder {
-        private ImageView imageView, imgDel;
-        private TextView item_text,item_price;
-        private CardView cardView;
+         ImageView imageView, imgDel;
+         TextView item_text,item_price;
+         CardView cardView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
              imageView= itemView.findViewById(R.id.item_image_view);
